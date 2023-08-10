@@ -1,23 +1,25 @@
+resource "kubernetes_namespace" "ns" {
+  metadata {
+    name = var.namespace
+  }
+}
+
 module "jellyfin" {
   source = "../modules/jellyfin"
-
-  namespace = "media"
+  namespace = kubernetes_namespace.ns.metadata.0.name
 }
 
 module "sonarr" {
   source = "../modules/sonarr"
-
-  namespace = "media"
+  namespace = kubernetes_namespace.ns.metadata.0.name
 }
 
 module "radarr" {
   source = "../modules/radarr"
-
-  namespace = "media"
+  namespace = kubernetes_namespace.ns.metadata.0.name
 }
 
 module "sabnzbd" {
   source = "../modules/sabnzbd"
-
-  namespace = "media"
+  namespace = kubernetes_namespace.ns.metadata.0.name
 }
